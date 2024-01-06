@@ -3,6 +3,7 @@ import { given } from "@nivinjoseph/n-defensive";
 import { App } from "./app.js";
 import { ConsoleLogger, LogDateTimeZone } from "@nivinjoseph/n-log";
 import { SvcApp } from "../src/index.js";
+import { SocketClient } from "@nivinjoseph/n-sock/client";
 
 
 const logger = new ConsoleLogger({ logDateTimeZone: LogDateTimeZone.est });
@@ -13,7 +14,8 @@ class Installer implements ComponentInstaller
     {
         given(registry, "registry").ensureHasValue().ensureIsObject();
 
-        registry.registerInstance("Logger", logger);
+        registry.registerInstance("Logger", logger)
+            .registerInstance("SocketClient", new SocketClient("http://localhost:3000"));
     }
 }
 

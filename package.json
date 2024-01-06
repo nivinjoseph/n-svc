@@ -37,6 +37,7 @@
     },
     "homepage": "https://github.com/nivinjoseph/n-svc#readme",
     "devDependencies": {
+        "@nivinjoseph/n-sock": "https://github.com/shreymahendru/n-sock#ts-5-test-2",
         "@types/node": "^20.10",
         "@typescript-eslint/eslint-plugin": "^6.15.0",
         "@typescript-eslint/parser": "^6.15.0",
