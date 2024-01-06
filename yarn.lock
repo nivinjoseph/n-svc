@@ -175,9 +175,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nivinjoseph/n-sock@https://github.com/shreymahendru/n-sock#ts-5-test-2":
-  version: 2.0.1
-  resolution: "@nivinjoseph/n-sock@https://github.com/shreymahendru/n-sock.git#commit=a78d5674f35f8d4616b3210a19eafd858cb897a0"
+"@nivinjoseph/n-sock@npm:2.0.2":
+  version: 2.0.2
+  resolution: "@nivinjoseph/n-sock@npm:2.0.2"
   dependencies:
     "@nivinjoseph/n-defensive": "npm:^2.0.1"
     "@nivinjoseph/n-exception": "npm:^2.0.1"
@@ -190,7 +190,7 @@ __metadata:
     socket.io: "npm:^4.7.3"
     socket.io-client: "npm:^4.7.3"
     utf-8-validate: "npm:^6.0.3"
-  checksum: fc14d98c5a8afefe2cc32f2df6587031cb675e22ce0fb7d130ffef078824a139c85e15b23258f35f22c6cbbe6382398b05da2f6676c5ffdaf033baff0583914f
+  checksum: f3f6e9a1a6684594ef393c4766160fc77fa2a3ea971486ce4049bd675073075a4120598d4b3f4d5971edfd7253dc4727ee460d790e4657aaf7fc79cb71c55b68
   languageName: node
   linkType: hard
 
@@ -204,7 +204,7 @@ __metadata:
     "@nivinjoseph/n-ext": "npm:^2.0.1"
     "@nivinjoseph/n-ject": "npm:^3.0.1"
     "@nivinjoseph/n-log": "npm:^3.0.1"
-    "@nivinjoseph/n-sock": "https://github.com/shreymahendru/n-sock#ts-5-test-2"
+    "@nivinjoseph/n-sock": "npm:2.0.2"
     "@nivinjoseph/n-util": "npm:2.0.1"
     "@types/node": "npm:^20.10"
     "@typescript-eslint/eslint-plugin": "npm:^6.15.0"
