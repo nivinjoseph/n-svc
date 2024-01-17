@@ -51,7 +51,7 @@
         "@nivinjoseph/n-defensive": "^2.0.1",
         "@nivinjoseph/n-exception": "^2.0.1",
         "@nivinjoseph/n-ext": "^2.0.1",
-        "@nivinjoseph/n-ject": "^3.0.1",
+        "@nivinjoseph/n-ject": "^3.0.2",
         "@nivinjoseph/n-log": "^3.0.1",
         "@nivinjoseph/n-util": "2.0.1"
     },

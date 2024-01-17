@@ -145,16 +145,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nivinjoseph/n-ject@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "@nivinjoseph/n-ject@npm:3.0.1"
+"@nivinjoseph/n-ject@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "@nivinjoseph/n-ject@npm:3.0.2"
   dependencies:
     "@nivinjoseph/n-defensive": "npm:^2.0.1"
     "@nivinjoseph/n-exception": "npm:^2.0.1"
     "@nivinjoseph/n-ext": "npm:^2.0.1"
     "@nivinjoseph/n-util": "npm:^2.0.1"
     tslib: "npm:^2.6.2"
-  checksum: 1a637d1aa9bf2ee94300f909910628b45683b700692d159f5391c07f72a7ac12902b695bfee84d6dc92d757f9b1b996a2a29a001e2e44f995c65e2bcbf9ff25b
+  checksum: 308dab5fbe44badc65985e7e0f4bf7e45e6e302c89a5b9405795c98b91f88335794633b4a8ac171e44c4453117bdb8dd17b709c54b598fdb65a8b04e8d1cb858
   languageName: node
   linkType: hard
 
@@ -202,7 +202,7 @@ __metadata:
     "@nivinjoseph/n-defensive": "npm:^2.0.1"
     "@nivinjoseph/n-exception": "npm:^2.0.1"
     "@nivinjoseph/n-ext": "npm:^2.0.1"
-    "@nivinjoseph/n-ject": "npm:^3.0.1"
+    "@nivinjoseph/n-ject": "npm:^3.0.2"
     "@nivinjoseph/n-log": "npm:^3.0.1"
     "@nivinjoseph/n-sock": "npm:2.0.2"
     "@nivinjoseph/n-util": "npm:2.0.1"
