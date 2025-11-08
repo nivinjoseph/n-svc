@@ -64,6 +64,7 @@ export class SvcApp
         return this;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
     public registerProgram(programClass: Function): this
     {
         if (this._isBootstrapped || this._programRegistered)
