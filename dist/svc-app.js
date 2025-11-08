@@ -38,6 +38,7 @@ export class SvcApp {
         this._container.install(installer);
         return this;
     }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
     registerProgram(programClass) {
         if (this._isBootstrapped || this._programRegistered)
             throw new InvalidOperationException("registerProgram");
