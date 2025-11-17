@@ -5,6 +5,7 @@ import { ComponentInstaller, Container, Registry } from "@nivinjoseph/n-ject";
 import { ConsoleLogger, Logger } from "@nivinjoseph/n-log";
 import { Program } from "./program.js";
 import { ShutdownManager } from "./shutdown-manager.js";
+import * as http from "node:http";
 
 
 // public
@@ -17,6 +18,7 @@ export class SvcApp
     private _programRegistered = false;
     private readonly _disposeActions = new Array<() => Promise<void>>();
     private _isBootstrapped = false;
+    private _server!: http.Server;
     private _program!: Program;
     // private _isShutDown = false;
     private _isCleanUp = false;
@@ -173,6 +175,43 @@ export class SvcApp
     private async _configureStartup(): Promise<void>
     {
         await this._logger.logInfo(`SERVICE STARTING...`);
+
+        try 
+        {
+            const server = http.createServer((req, res) =>
+            {
+                if (req.url === "/healthCheck")
+                {
+                    res.statusCode = 200;
+                    res.setHeader("Content-Type", "text/plain");
+                    res.end("AVAILABLE");
+                }
+                else
+                {
+                    res.statusCode = 404;
+                    res.setHeader("Content-Type", "text/plain");
+                    res.end("NOT FOUND");
+                }
+            });
+
+            await new Promise<void>((resolve, _reject) =>
+            {
+                server.listen(8080, () =>
+                {
+                    resolve();
+                });
+    
+                this._server = server;        
+            });
+            
+            await this._logger.logInfo("STARTED HEALTH CHECK SERVER ON PORT 8080");
+        }
+        catch (error)
+        {
+            await this._logger.logInfo("ERROR STARTING HEALTH CHECK SERVER ON PORT 8080");
+            throw error;
+        }
+
         this._program = this._container.resolve<Program>(this._programKey);
     }
 
@@ -198,6 +237,34 @@ export class SvcApp
                 {
                     await this._logger.logWarning("ERROR STOPPING PROGRAM");
                     await this._logger.logError(error as any);
+                }
+                finally
+                {
+                    try 
+                    {
+                        await new Promise<void>((resolve, reject) =>
+                        {
+                            this._server.closeAllConnections();
+                            this._server.close((err): void =>  
+                            {
+                                if (err != null)
+                                {
+                                    reject(err);
+                                }
+                                else
+                                {
+                                    resolve();
+                                }
+                            });
+                        });
+                        
+                        await this._logger.logInfo("STOPPED HEALTH CHECK SERVER ON PORT 8080");
+                    }
+                    catch (error)
+                    {
+                        await this._logger.logWarning("ERROR STOPPING HEALTH CHECK SERVER ON PORT 8080");
+                        await this._logger.logError(error as any);
+                    }
                 }
             },
             (): Promise<any> => this._cleanUp()
