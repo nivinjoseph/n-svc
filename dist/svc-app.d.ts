@@ -8,6 +8,7 @@ export declare class SvcApp {
     private _programRegistered;
     private readonly _disposeActions;
     private _isBootstrapped;
+    private _server;
     private _program;
     private _isCleanUp;
     private _shutdownManager;
