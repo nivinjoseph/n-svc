@@ -13,6 +13,7 @@ export class SvcApp {
         this._programRegistered = false;
         this._disposeActions = new Array();
         this._isBootstrapped = false;
+        this._serverPort = 8080;
         // private _isShutDown = false;
         this._isCleanUp = false;
         given(container, "container").ensureIsObject().ensureIsType(Container);
@@ -77,6 +78,13 @@ export class SvcApp {
         });
         return this;
     }
+    useHealthCheckServerPort(port) {
+        if (this._isBootstrapped)
+            throw new InvalidOperationException("useHealthCheckServerPort");
+        given(port, "port").ensureHasValue().ensureIsNumber();
+        this._serverPort = port;
+        return this;
+    }
     bootstrap() {
         if (this._isBootstrapped || !this._programRegistered)
             throw new InvalidOperationException("bootstrap");
@@ -134,15 +142,15 @@ export class SvcApp {
                 }
             });
             await new Promise((resolve, _reject) => {
-                server.listen(8080, () => {
+                server.listen(this._serverPort, () => {
                     resolve();
                 });
                 this._server = server;
             });
-            await this._logger.logInfo("STARTED HEALTH CHECK SERVER ON PORT 8080");
+            await this._logger.logInfo(`STARTED HEALTH CHECK SERVER ON PORT ${this._serverPort}`);
         }
         catch (error) {
-            await this._logger.logInfo("ERROR STARTING HEALTH CHECK SERVER ON PORT 8080");
+            await this._logger.logInfo(`ERROR STARTING HEALTH CHECK SERVER ON PORT ${this._serverPort}`);
             throw error;
         }
         this._program = this._container.resolve(this._programKey);
@@ -211,7 +219,7 @@ export class SvcApp {
     //     await this._program.stop();
     //     await this._cleanUp();
     //     console.warn(`SERVICE STOPPED (${signal})`);
-    //     process.exit(0);  
+    //     process.exit(0);
     // }
     async _cleanUp() {
         if (this._isCleanUp)

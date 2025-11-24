@@ -8,6 +8,7 @@ export declare class SvcApp {
     private _programRegistered;
     private readonly _disposeActions;
     private _isBootstrapped;
+    private _serverPort;
     private _server;
     private _program;
     private _isCleanUp;
@@ -18,6 +19,7 @@ export declare class SvcApp {
     useInstaller(installer: ComponentInstaller): this;
     registerProgram(programClass: Function): this;
     registerDisposeAction(disposeAction: () => Promise<void>): this;
+    useHealthCheckServerPort(port: number): this;
     bootstrap(): void;
     private _configureContainer;
     private _configureStartup;
