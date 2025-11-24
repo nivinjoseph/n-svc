@@ -18,6 +18,7 @@ export class SvcApp
     private _programRegistered = false;
     private readonly _disposeActions = new Array<() => Promise<void>>();
     private _isBootstrapped = false;
+    private _serverPort = 8080;
     private _server!: http.Server;
     private _program!: Program;
     // private _isShutDown = false;
@@ -89,7 +90,7 @@ export class SvcApp
         {
             return new Promise((resolve) =>
             {
-                try 
+                try
                 {
                     disposeAction()
                         .then(() => resolve())
@@ -113,6 +114,17 @@ export class SvcApp
                 }
             });
         });
+        return this;
+    }
+
+    public useHealthCheckServerPort(port: number): this
+    {
+        if (this._isBootstrapped)
+            throw new InvalidOperationException("useHealthCheckServerPort");
+
+        given(port, "port").ensureHasValue().ensureIsNumber();
+        this._serverPort = port;
+
         return this;
     }
 
@@ -176,7 +188,7 @@ export class SvcApp
     {
         await this._logger.logInfo(`SERVICE STARTING...`);
 
-        try 
+        try
         {
             const server = http.createServer((req, res) =>
             {
@@ -196,19 +208,19 @@ export class SvcApp
 
             await new Promise<void>((resolve, _reject) =>
             {
-                server.listen(8080, () =>
+                server.listen(this._serverPort, () =>
                 {
                     resolve();
                 });
-    
-                this._server = server;        
+
+                this._server = server;
             });
-            
-            await this._logger.logInfo("STARTED HEALTH CHECK SERVER ON PORT 8080");
+
+            await this._logger.logInfo(`STARTED HEALTH CHECK SERVER ON PORT ${this._serverPort}`);
         }
         catch (error)
         {
-            await this._logger.logInfo("ERROR STARTING HEALTH CHECK SERVER ON PORT 8080");
+            await this._logger.logInfo(`ERROR STARTING HEALTH CHECK SERVER ON PORT ${this._serverPort}`);
             throw error;
         }
 
@@ -227,7 +239,7 @@ export class SvcApp
         this._shutdownManager = new ShutdownManager(this._logger, [
             async (): Promise<void> =>
             {
-                try 
+                try
                 {
                     await this._logger.logInfo("STOPPING PROGRAM...");
                     await this._program.stop();
@@ -240,12 +252,12 @@ export class SvcApp
                 }
                 finally
                 {
-                    try 
+                    try
                     {
                         await new Promise<void>((resolve, reject) =>
                         {
                             this._server.closeAllConnections();
-                            this._server.close((err): void =>  
+                            this._server.close((err): void =>
                             {
                                 if (err != null)
                                 {
@@ -257,7 +269,7 @@ export class SvcApp
                                 }
                             });
                         });
-                        
+
                         await this._logger.logInfo("STOPPED HEALTH CHECK SERVER ON PORT 8080");
                     }
                     catch (error)
@@ -305,7 +317,7 @@ export class SvcApp
     //     await this._cleanUp();
 
     //     console.warn(`SERVICE STOPPED (${signal})`);
-    //     process.exit(0);  
+    //     process.exit(0);
     // }
 
     private async _cleanUp(): Promise<void>
