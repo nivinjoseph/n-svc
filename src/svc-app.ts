@@ -176,41 +176,7 @@ export class SvcApp
     {
         await this._logger.logInfo(`SERVICE STARTING...`);
 
-        try 
-        {
-            const server = http.createServer((req, res) =>
-            {
-                if (req.url === "/healthCheck")
-                {
-                    res.statusCode = 200;
-                    res.setHeader("Content-Type", "text/plain");
-                    res.end("AVAILABLE");
-                }
-                else
-                {
-                    res.statusCode = 404;
-                    res.setHeader("Content-Type", "text/plain");
-                    res.end("NOT FOUND");
-                }
-            });
-
-            await new Promise<void>((resolve, _reject) =>
-            {
-                server.listen(8080, () =>
-                {
-                    resolve();
-                });
-    
-                this._server = server;        
-            });
-            
-            await this._logger.logInfo("STARTED HEALTH CHECK SERVER ON PORT 8080");
-        }
-        catch (error)
-        {
-            await this._logger.logInfo("ERROR STARTING HEALTH CHECK SERVER ON PORT 8080");
-            throw error;
-        }
+        await this._startupHealthCheckServer();
 
         this._program = this._container.resolve<Program>(this._programKey);
     }
@@ -240,31 +206,7 @@ export class SvcApp
                 }
                 finally
                 {
-                    try 
-                    {
-                        await new Promise<void>((resolve, reject) =>
-                        {
-                            this._server.closeAllConnections();
-                            this._server.close((err): void =>  
-                            {
-                                if (err != null)
-                                {
-                                    reject(err);
-                                }
-                                else
-                                {
-                                    resolve();
-                                }
-                            });
-                        });
-                        
-                        await this._logger.logInfo("STOPPED HEALTH CHECK SERVER ON PORT 8080");
-                    }
-                    catch (error)
-                    {
-                        await this._logger.logWarning("ERROR STOPPING HEALTH CHECK SERVER ON PORT 8080");
-                        await this._logger.logError(error as any);
-                    }
+                    await this._shutdownHealthCheckServer();
                 }
             },
             (): Promise<any> => this._cleanUp()
@@ -279,6 +221,80 @@ export class SvcApp
         // {
         //     this._shutDown("SIGINT").catch(e => console.error(e));
         // });
+    }
+    
+    private async _startupHealthCheckServer(): Promise<void>
+    {
+        if (ConfigurationManager.requireStringConfig("env") === "dev")
+            return;
+        
+        try 
+        {
+            const server = http.createServer((req, res) =>
+            {
+                if (req.url === "/healthCheck")
+                {
+                    res.statusCode = 200;
+                    res.setHeader("Content-Type", "text/plain");
+                    res.end("AVAILABLE");
+                }
+                else
+                {
+                    res.statusCode = 404;
+                    res.setHeader("Content-Type", "text/plain");
+                    res.end("NOT FOUND");
+                }
+            });
+
+            await new Promise<void>((resolve, _reject) =>
+            {
+                server.listen(8080, () =>
+                {
+                    resolve();
+                });
+
+                this._server = server;
+            });
+
+            await this._logger.logInfo("STARTED HEALTH CHECK SERVER ON PORT 8080");
+        }
+        catch (error)
+        {
+            await this._logger.logInfo("ERROR STARTING HEALTH CHECK SERVER ON PORT 8080");
+            throw error;
+        }
+    }
+    
+    private async _shutdownHealthCheckServer(): Promise<void>
+    {
+        if (ConfigurationManager.requireStringConfig("env") === "dev")
+            return;
+        
+        try 
+        {
+            await new Promise<void>((resolve, reject) =>
+            {
+                this._server.closeAllConnections();
+                this._server.close((err): void =>  
+                {
+                    if (err != null)
+                    {
+                        reject(err);
+                    }
+                    else
+                    {
+                        resolve();
+                    }
+                });
+            });
+
+            await this._logger.logInfo("STOPPED HEALTH CHECK SERVER ON PORT 8080");
+        }
+        catch (error)
+        {
+            await this._logger.logWarning("ERROR STOPPING HEALTH CHECK SERVER ON PORT 8080");
+            await this._logger.logError(error as any);
+        }
     }
 
     // private async _shutDown(signal: string): Promise<void>
