@@ -22,6 +22,8 @@ export declare class SvcApp {
     private _configureContainer;
     private _configureStartup;
     private _configureShutDown;
+    private _startupHealthCheckServer;
+    private _shutdownHealthCheckServer;
     private _cleanUp;
 }
 //# sourceMappingURL=svc-app.d.ts.map

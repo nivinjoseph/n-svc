@@ -120,6 +120,43 @@ export class SvcApp {
     }
     async _configureStartup() {
         await this._logger.logInfo(`SERVICE STARTING...`);
+        await this._startupHealthCheckServer();
+        this._program = this._container.resolve(this._programKey);
+    }
+    _configureShutDown() {
+        this.registerDisposeAction(async () => {
+            await this._logger.logInfo("CLEANING UP. PLEASE WAIT...");
+            // return Delay.seconds(ConfigurationManager.getConfig<string>("env") === "dev" ? 2 : 20);
+        });
+        this._shutdownManager = new ShutdownManager(this._logger, [
+            async () => {
+                try {
+                    await this._logger.logInfo("STOPPING PROGRAM...");
+                    await this._program.stop();
+                    await this._logger.logInfo("PROGRAM STOPPED");
+                }
+                catch (error) {
+                    await this._logger.logWarning("ERROR STOPPING PROGRAM");
+                    await this._logger.logError(error);
+                }
+                finally {
+                    await this._shutdownHealthCheckServer();
+                }
+            },
+            () => this._cleanUp()
+        ]);
+        // process.on("SIGTERM", () =>
+        // {
+        //     this._shutDown("SIGTERM").catch(e => console.error(e));
+        // });
+        // process.on("SIGINT", () =>
+        // {
+        //     this._shutDown("SIGINT").catch(e => console.error(e));
+        // });
+    }
+    async _startupHealthCheckServer() {
+        if (ConfigurationManager.requireStringConfig("env") === "dev")
+            return;
         try {
             const server = http.createServer((req, res) => {
                 if (req.url === "/healthCheck") {
@@ -145,55 +182,28 @@ export class SvcApp {
             await this._logger.logInfo("ERROR STARTING HEALTH CHECK SERVER ON PORT 8080");
             throw error;
         }
-        this._program = this._container.resolve(this._programKey);
     }
-    _configureShutDown() {
-        this.registerDisposeAction(async () => {
-            await this._logger.logInfo("CLEANING UP. PLEASE WAIT...");
-            // return Delay.seconds(ConfigurationManager.getConfig<string>("env") === "dev" ? 2 : 20);
-        });
-        this._shutdownManager = new ShutdownManager(this._logger, [
-            async () => {
-                try {
-                    await this._logger.logInfo("STOPPING PROGRAM...");
-                    await this._program.stop();
-                    await this._logger.logInfo("PROGRAM STOPPED");
-                }
-                catch (error) {
-                    await this._logger.logWarning("ERROR STOPPING PROGRAM");
-                    await this._logger.logError(error);
-                }
-                finally {
-                    try {
-                        await new Promise((resolve, reject) => {
-                            this._server.closeAllConnections();
-                            this._server.close((err) => {
-                                if (err != null) {
-                                    reject(err);
-                                }
-                                else {
-                                    resolve();
-                                }
-                            });
-                        });
-                        await this._logger.logInfo("STOPPED HEALTH CHECK SERVER ON PORT 8080");
+    async _shutdownHealthCheckServer() {
+        if (ConfigurationManager.requireStringConfig("env") === "dev")
+            return;
+        try {
+            await new Promise((resolve, reject) => {
+                this._server.closeAllConnections();
+                this._server.close((err) => {
+                    if (err != null) {
+                        reject(err);
                     }
-                    catch (error) {
-                        await this._logger.logWarning("ERROR STOPPING HEALTH CHECK SERVER ON PORT 8080");
-                        await this._logger.logError(error);
+                    else {
+                        resolve();
                     }
-                }
-            },
-            () => this._cleanUp()
-        ]);
-        // process.on("SIGTERM", () =>
-        // {
-        //     this._shutDown("SIGTERM").catch(e => console.error(e));
-        // });
-        // process.on("SIGINT", () =>
-        // {
-        //     this._shutDown("SIGINT").catch(e => console.error(e));
-        // });
+                });
+            });
+            await this._logger.logInfo("STOPPED HEALTH CHECK SERVER ON PORT 8080");
+        }
+        catch (error) {
+            await this._logger.logWarning("ERROR STOPPING HEALTH CHECK SERVER ON PORT 8080");
+            await this._logger.logError(error);
+        }
     }
     // private async _shutDown(signal: string): Promise<void>
     // {
