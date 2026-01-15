@@ -1,6 +1,6 @@
 {
     "name": "@nivinjoseph/n-svc",
-    "version": "3.0.5",
+    "version": "3.0.6",
     "description": "Service Application Framework",
     "packageManager": "yarn@4.0.2",
     "type": "module",
@@ -18,7 +18,7 @@
         "clean-dist": "find ./dist -name '*.js' -delete -o -name '*.map' -delete -o -name '*.ts' -delete",
         "clean-all": "yarn clean-src && yarn clean-test && yarn clean-test-app && yarn clean-dist",
         "test": "yarn ts-build && node --test --enable-source-maps ./test/**/*.test.js",
-        "publish-package": "npm run ts-build-dist && git add . && git commit -m 'preparing to publish new version' && npm version patch && git push && npm publish --access=public",
+        "publish-package": "npm run ts-build-dist && git add . && git commit -m 'preparing to publish new version' && git push && npm publish --access=public",
         "node-watch": "node --watch --inspect=5858 ./test-app/service.js",
         "dev": "yarn ts-build && concurrently -p \"[{name}]\" -n \"TS,APP\" -c \"blue.bold,green.bold\"  \"yarn ts-compile-watch\" \"yarn node-watch\""
     },
@@ -49,13 +49,13 @@
         "typescript-eslint": "^8.46.3"
     },
     "dependencies": {
-        "@nivinjoseph/n-config": "^2.0.2",
+        "@nivinjoseph/n-config": "^2.0.3",
         "@nivinjoseph/n-defensive": "^2.0.2",
         "@nivinjoseph/n-exception": "^2.0.2",
         "@nivinjoseph/n-ext": "^2.0.2",
-        "@nivinjoseph/n-ject": "^3.0.3",
-        "@nivinjoseph/n-log": "^3.0.5",
-        "@nivinjoseph/n-util": "3.0.2"
+        "@nivinjoseph/n-ject": "^3.0.4",
+        "@nivinjoseph/n-log": "^3.0.6",
+        "@nivinjoseph/n-util": "3.2.0"
     },
     "engines": {
         "node": ">=24.10"

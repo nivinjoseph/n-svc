@@ -184,15 +184,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nivinjoseph/n-config@npm:^2.0.2":
-  version: 2.0.2
-  resolution: "@nivinjoseph/n-config@npm:2.0.2"
+"@nivinjoseph/n-config@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "@nivinjoseph/n-config@npm:2.0.3"
   dependencies:
     "@nivinjoseph/n-defensive": "npm:^2.0.2"
     "@nivinjoseph/n-exception": "npm:^2.0.2"
     "@nivinjoseph/n-ext": "npm:^2.0.2"
-    "@nivinjoseph/n-util": "npm:^3.0.2"
-  checksum: 196ec98138526ad35866a3551f16a4dc48c6c7d9154c4476fecfc63c0e7c612797dd59390627a69b3b297e831d22ab8ecef42f824af96a8147a965fefabb2772
+    "@nivinjoseph/n-util": "npm:^3.2.0"
+  checksum: 9c9734d43d1dfc1647282611c50af330ff10bf627ad547a67d41f7d0fe61f056414c69f072a826a433196ef4bed14c7a07e19f4e5a1b53feefabe6aad4f41ecd
   languageName: node
   linkType: hard
 
@@ -227,33 +227,32 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nivinjoseph/n-ject@npm:^3.0.3":
-  version: 3.0.3
-  resolution: "@nivinjoseph/n-ject@npm:3.0.3"
+"@nivinjoseph/n-ject@npm:^3.0.4":
+  version: 3.0.4
+  resolution: "@nivinjoseph/n-ject@npm:3.0.4"
   dependencies:
     "@nivinjoseph/n-defensive": "npm:^2.0.2"
     "@nivinjoseph/n-exception": "npm:^2.0.2"
     "@nivinjoseph/n-ext": "npm:^2.0.2"
-    "@nivinjoseph/n-util": "npm:^3.0.2"
+    "@nivinjoseph/n-util": "npm:^3.2.0"
     tslib: "npm:^2.8.1"
-  checksum: cf6ca1ead9af9d57fe9275b3ed1aa166716889727e34943694cc3979ad22f333992228affcdc62bf415157a64eca1670fffbef00196530dcd82afb4745eabe7c
+  checksum: 929fcf4180431f0c149c1be7ab25294adc8e2058ffbde088031cc541cfb2e736887583ec9a19c985eefcdf6db86cb4489d6ca607ed39565dbee74d1fc797f257
   languageName: node
   linkType: hard
 
-"@nivinjoseph/n-log@npm:^3.0.5":
-  version: 3.0.5
-  resolution: "@nivinjoseph/n-log@npm:3.0.5"
+"@nivinjoseph/n-log@npm:^3.0.6":
+  version: 3.0.6
+  resolution: "@nivinjoseph/n-log@npm:3.0.6"
   dependencies:
-    "@nivinjoseph/n-config": "npm:^2.0.2"
+    "@nivinjoseph/n-config": "npm:^2.0.3"
     "@nivinjoseph/n-defensive": "npm:^2.0.2"
     "@nivinjoseph/n-exception": "npm:^2.0.2"
     "@nivinjoseph/n-ext": "npm:^2.0.2"
-    "@nivinjoseph/n-util": "npm:^3.0.2"
+    "@nivinjoseph/n-util": "npm:^3.2.0"
     "@opentelemetry/api": "npm:^1.9.0"
-    "@slack/web-api": "npm:^7.12.0"
+    "@slack/web-api": "npm:^7.13.0"
     chalk: "npm:^5.6.2"
-    luxon: "npm:^3.7.2"
-  checksum: a07e4bea1d640d1e6fb6a9d50210621d063acc0c667d73f447acdeddf58c570c86add118ef10512c2a350ded8add8a4945fba0fc718a68a68cc05f8360929e72
+  checksum: 47fa611444a20c324c8577ae65464cce9a8f20abcca649acd5a06cde6908a04b5c66a5c10e7fa8d8e4a8204576ef14cf2bd69a17b67b2acd460842cfee7b2ef1
   languageName: node
   linkType: hard
 
@@ -281,14 +280,14 @@ __metadata:
   resolution: "@nivinjoseph/n-svc@workspace:."
   dependencies:
     "@eslint/js": "npm:^9.39.1"
-    "@nivinjoseph/n-config": "npm:^2.0.2"
+    "@nivinjoseph/n-config": "npm:^2.0.3"
     "@nivinjoseph/n-defensive": "npm:^2.0.2"
     "@nivinjoseph/n-exception": "npm:^2.0.2"
     "@nivinjoseph/n-ext": "npm:^2.0.2"
-    "@nivinjoseph/n-ject": "npm:^3.0.3"
-    "@nivinjoseph/n-log": "npm:^3.0.5"
+    "@nivinjoseph/n-ject": "npm:^3.0.4"
+    "@nivinjoseph/n-log": "npm:^3.0.6"
     "@nivinjoseph/n-sock": "npm:2.0.3"
-    "@nivinjoseph/n-util": "npm:3.0.2"
+    "@nivinjoseph/n-util": "npm:3.2.0"
     "@stylistic/eslint-plugin": "npm:^5.5.0"
     "@types/node": "npm:^24.10"
     concurrently: "npm:^9.2.1"
@@ -300,7 +299,23 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@nivinjoseph/n-util@npm:3.0.2, @nivinjoseph/n-util@npm:^3.0.2":
+"@nivinjoseph/n-util@npm:3.2.0, @nivinjoseph/n-util@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "@nivinjoseph/n-util@npm:3.2.0"
+  dependencies:
+    "@nivinjoseph/n-defensive": "npm:^2.0.2"
+    "@nivinjoseph/n-exception": "npm:^2.0.2"
+    "@nivinjoseph/n-ext": "npm:^2.0.2"
+    luxon: "npm:^3.7.2"
+    mustache: "npm:^4.2.0"
+    sanitize-html: "npm:^2.17.0"
+    tslib: "npm:^2.8.1"
+    uuid: "npm:^13.0.0"
+  checksum: 096af07ad311575eb9fa3aefe9d7a4154211e25e41a5c82fb736faa18ccf2d039ef881d79c157706642919b6da9138d8c2fef77282d6e14fb4d649da832cbf94
+  languageName: node
+  linkType: hard
+
+"@nivinjoseph/n-util@npm:^3.0.2":
   version: 3.0.2
   resolution: "@nivinjoseph/n-util@npm:3.0.2"
   dependencies:
@@ -447,9 +462,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@slack/web-api@npm:^7.12.0":
-  version: 7.12.0
-  resolution: "@slack/web-api@npm:7.12.0"
+"@slack/web-api@npm:^7.13.0":
+  version: 7.13.0
+  resolution: "@slack/web-api@npm:7.13.0"
   dependencies:
     "@slack/logger": "npm:^4.0.0"
     "@slack/types": "npm:^2.18.0"
@@ -463,7 +478,7 @@ __metadata:
     p-queue: "npm:^6"
     p-retry: "npm:^4"
     retry: "npm:^0.13.1"
-  checksum: 3b40863c93a6530d9f8a27f23e3f5fa2388e10a3eab140fe8bf554a67c38b5265d052db45d6fee5624ce879e494ea47a9d019f8b9061572eae1deae636bfc802
+  checksum: 7442d42d71dc87b10f4e17a0c10ed7c610329b3c3cc952652706b521995902f2fb7216c853ca02b2f8fc85a0e33a511ebd13db82fbc99fb295ac31fa37313e52
   languageName: node
   linkType: hard
 
