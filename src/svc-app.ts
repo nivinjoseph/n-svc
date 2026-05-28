@@ -260,7 +260,7 @@ export class SvcApp
         }
         catch (error)
         {
-            await this._logger.logInfo("ERROR STARTING HEALTH CHECK SERVER ON PORT 8080");
+            await this._logger.logError("ERROR STARTING HEALTH CHECK SERVER ON PORT 8080");
             throw error;
         }
     }
