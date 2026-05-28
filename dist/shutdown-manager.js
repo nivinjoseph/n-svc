@@ -1,9 +1,11 @@
 import { given } from "@nivinjoseph/n-defensive";
 export class ShutdownManager {
+    _logger;
+    _cleanup;
+    _isShutDown = false;
+    _shutdownPromise = null;
     get isShutdown() { return this._isShutDown; }
     constructor(logger, cleanup) {
-        this._isShutDown = false;
-        this._shutdownPromise = null;
         given(logger, "logger").ensureHasValue().ensureIsObject();
         this._logger = logger;
         given(cleanup, "cleanup").ensureHasValue().ensureIsArray().ensureIsNotEmpty();

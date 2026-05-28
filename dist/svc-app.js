@@ -7,14 +7,21 @@ import { ShutdownManager } from "./shutdown-manager.js";
 import * as http from "node:http";
 // public
 export class SvcApp {
+    _container;
+    _ownsContainer;
+    _programKey = "$program";
+    _logger;
+    _programRegistered = false;
+    _disposeActions = new Array();
+    _isBootstrapped = false;
+    _server;
+    _program;
+    // private _isShutDown = false;
+    _isCleanUp = false;
+    // private _shutdownPromise: Promise<void> | null = null;
+    _shutdownManager;
     get containerRegistry() { return this._container; }
     constructor(container) {
-        this._programKey = "$program";
-        this._programRegistered = false;
-        this._disposeActions = new Array();
-        this._isBootstrapped = false;
-        // private _isShutDown = false;
-        this._isCleanUp = false;
         given(container, "container").ensureIsObject().ensureIsType(Container);
         if (container == null) {
             this._container = new Container();
@@ -179,7 +186,7 @@ export class SvcApp {
             await this._logger.logInfo("STARTED HEALTH CHECK SERVER ON PORT 8080");
         }
         catch (error) {
-            await this._logger.logInfo("ERROR STARTING HEALTH CHECK SERVER ON PORT 8080");
+            await this._logger.logError("ERROR STARTING HEALTH CHECK SERVER ON PORT 8080");
             throw error;
         }
     }
