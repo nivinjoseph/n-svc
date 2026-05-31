@@ -49,13 +49,13 @@
         "typescript-eslint": "8.58.2"
     },
     "dependencies": {
-        "@nivinjoseph/n-config": "2.0.4",
+        "@nivinjoseph/n-config": "2.0.5",
         "@nivinjoseph/n-defensive": "2.0.3",
         "@nivinjoseph/n-exception": "2.0.3",
         "@nivinjoseph/n-ext": "2.0.5",
-        "@nivinjoseph/n-ject": "3.0.5",
-        "@nivinjoseph/n-log": "3.0.7",
-        "@nivinjoseph/n-util": "4.0.1"
+        "@nivinjoseph/n-ject": "3.0.6",
+        "@nivinjoseph/n-log": "3.0.8",
+        "@nivinjoseph/n-util": "4.0.2"
     },
     "engines": {
         "node": ">=24.10"
