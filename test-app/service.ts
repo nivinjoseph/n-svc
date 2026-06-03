@@ -10,12 +10,14 @@ const logger = new ConsoleLogger({ logDateTimeZone: LogDateTimeZone.est });
 
 class Installer implements ComponentInstaller
 {
-    public install(registry: Registry): void
+    public install(registry: Registry): Promise<void>
     {
         given(registry, "registry").ensureHasValue().ensureIsObject();
 
         registry.registerInstance("Logger", logger)
             .registerInstance("SocketClient", new SocketClient("http://localhost:3000"));
+        
+        return Promise.resolve();
     }
 }
 
@@ -25,5 +27,6 @@ const service = new SvcApp();
 service
     .useLogger(logger)
     .useInstaller(new Installer())
-    .registerProgram(App)
-    .bootstrap();
+    .registerProgram(App);
+    
+await service.bootstrap();

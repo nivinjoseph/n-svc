@@ -116,7 +116,7 @@ export class SvcApp
         return this;
     }
 
-    public bootstrap(): void
+    public async bootstrap(): Promise<void>
     {
         if (this._isBootstrapped || !this._programRegistered)
             throw new InvalidOperationException("bootstrap");
@@ -127,47 +127,44 @@ export class SvcApp
                 useJsonFormat: ConfigurationManager.getConfig<string>("env") !== "dev"
             });
 
-        this._configureContainer();
+        await this._configureContainer();
 
-        this._configureStartup()
-            .then(async () =>
-            {
-                const appEnv = ConfigurationManager.getConfig<string>("env");
-                const appName = ConfigurationManager.getConfig<string>("package.name");
-                const appVersion = ConfigurationManager.getConfig<string>("package.version");
-                const appDescription = ConfigurationManager.getConfig<string>("package.description");
+        try
+        {
+            await this._configureStartup();
 
-                await this._logger.logInfo(`ENV: ${appEnv}; NAME: ${appName}; VERSION: ${appVersion}; DESCRIPTION: ${appDescription}.`);
+            const appEnv = ConfigurationManager.getConfig<string>("env");
+            const appName = ConfigurationManager.getConfig<string>("package.name");
+            const appVersion = ConfigurationManager.getConfig<string>("package.version");
+            const appDescription = ConfigurationManager.getConfig<string>("package.description");
 
-                this._configureShutDown();
+            await this._logger.logInfo(`ENV: ${appEnv}; NAME: ${appName}; VERSION: ${appVersion}; DESCRIPTION: ${appDescription}.`);
 
-                const p = this._program.start();
-                this._isBootstrapped = true;
-                await this._logger.logInfo("SERVICE STARTED");
-                await p;
-            })
-            .then(async () =>
-            {
-                if (!this._shutdownManager.isShutdown)
-                    await this._cleanUp();
-            })
-            .then(async () =>
-            {
-                if (!this._shutdownManager.isShutdown)
-                    await this._logger.logInfo(`SERVICE COMPLETE`);
-            })
-            .catch(async (err) =>
-            {
-                await this._logger.logWarning(`SERVICE ERROR`);
-                await this._logger.logError(err);
-                process.exit(1);
-            });
+            this._configureShutDown();
+
+            const p = this._program.start();
+            this._isBootstrapped = true;
+            await this._logger.logInfo("SERVICE STARTED");
+            await p;
+
+            if (!this._shutdownManager.isShutdown)
+                await this._cleanUp();
+
+            if (!this._shutdownManager.isShutdown)
+                await this._logger.logInfo(`SERVICE COMPLETE`);
+        }
+        catch (error)
+        {
+            await this._logger.logWarning(`SERVICE ERROR`);
+            await this._logger.logError(error as any);
+            process.exit(1);
+        }
     }
 
-    private _configureContainer(): void
+    private async _configureContainer(): Promise<void>
     {
         if (this._ownsContainer)
-            this._container.bootstrap();
+            await this._container.bootstrap();
 
         this.registerDisposeAction(() => this._container.dispose());
     }
@@ -222,12 +219,12 @@ export class SvcApp
         //     this._shutDown("SIGINT").catch(e => console.error(e));
         // });
     }
-    
+
     private async _startupHealthCheckServer(): Promise<void>
     {
         if (ConfigurationManager.requireStringConfig("env") === "dev")
             return;
-        
+
         try 
         {
             const server = http.createServer((req, res) =>
@@ -264,12 +261,12 @@ export class SvcApp
             throw error;
         }
     }
-    
+
     private async _shutdownHealthCheckServer(): Promise<void>
     {
         if (ConfigurationManager.requireStringConfig("env") === "dev")
             return;
-        
+
         try 
         {
             await new Promise<void>((resolve, reject) =>
