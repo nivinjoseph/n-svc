@@ -18,7 +18,7 @@ export declare class SvcApp {
     useInstaller(installer: ComponentInstaller): this;
     registerProgram(programClass: Function): this;
     registerDisposeAction(disposeAction: () => Promise<void>): this;
-    bootstrap(): void;
+    bootstrap(): Promise<void>;
     private _configureContainer;
     private _configureStartup;
     private _configureShutDown;

@@ -84,7 +84,7 @@ export class SvcApp {
         });
         return this;
     }
-    bootstrap() {
+    async bootstrap() {
         if (this._isBootstrapped || !this._programRegistered)
             throw new InvalidOperationException("bootstrap");
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -92,9 +92,9 @@ export class SvcApp {
             this._logger = new ConsoleLogger({
                 useJsonFormat: ConfigurationManager.getConfig("env") !== "dev"
             });
-        this._configureContainer();
-        this._configureStartup()
-            .then(async () => {
+        await this._configureContainer();
+        try {
+            await this._configureStartup();
             const appEnv = ConfigurationManager.getConfig("env");
             const appName = ConfigurationManager.getConfig("package.name");
             const appVersion = ConfigurationManager.getConfig("package.version");
@@ -105,24 +105,20 @@ export class SvcApp {
             this._isBootstrapped = true;
             await this._logger.logInfo("SERVICE STARTED");
             await p;
-        })
-            .then(async () => {
             if (!this._shutdownManager.isShutdown)
                 await this._cleanUp();
-        })
-            .then(async () => {
             if (!this._shutdownManager.isShutdown)
                 await this._logger.logInfo(`SERVICE COMPLETE`);
-        })
-            .catch(async (err) => {
+        }
+        catch (error) {
             await this._logger.logWarning(`SERVICE ERROR`);
-            await this._logger.logError(err);
+            await this._logger.logError(error);
             process.exit(1);
-        });
+        }
     }
-    _configureContainer() {
+    async _configureContainer() {
         if (this._ownsContainer)
-            this._container.bootstrap();
+            await this._container.bootstrap();
         this.registerDisposeAction(() => this._container.dispose());
     }
     async _configureStartup() {
