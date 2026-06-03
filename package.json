@@ -1,6 +1,6 @@
 {
     "name": "@nivinjoseph/n-svc",
-    "version": "4.0.0",
+    "version": "4.0.1",
     "description": "Service Application Framework",
     "packageManager": "yarn@4.15.0",
     "type": "module",
